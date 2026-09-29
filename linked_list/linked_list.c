@@ -7,6 +7,9 @@ void node_free(Node *node);
 
 LinkedList *linked_list_new() {
   LinkedList *list = malloc(sizeof(LinkedList));
+  if (list == NULL)
+    return NULL;
+
   list->first = NULL;
   list->last = NULL;
   list->length = 0;
@@ -25,9 +28,11 @@ void linked_list_free(LinkedList *list) {
   free(list);
 }
 
-void linked_list_push(LinkedList *list, char *data) {
+int linked_list_push(LinkedList *list, char *data) {
   if (list->length == 0) {
     Node *first = malloc(sizeof(Node));
+    if (first == NULL)
+      return EXIT_FAILURE;
 
     first->data = data;
     first->next = NULL;
@@ -37,6 +42,8 @@ void linked_list_push(LinkedList *list, char *data) {
     list->last = first;
   } else {
     Node *next = malloc(sizeof(Node));
+    if (next == NULL)
+      return EXIT_FAILURE;
 
     next->data = data;
     next->next = NULL;
@@ -46,6 +53,7 @@ void linked_list_push(LinkedList *list, char *data) {
     list->last = next;
   }
   list->length++;
+  return EXIT_SUCCESS;
 }
 
 void linked_list_pop(LinkedList *list) {
@@ -79,26 +87,31 @@ Node *linked_list_get_nth(LinkedList *list, int index) {
   return node;
 }
 
-void linked_list_insert_nth(LinkedList *list, char *data, int index) {
+int linked_list_insert_nth(LinkedList *list, char *data, int index) {
   Node *newNode = malloc(sizeof(Node));
+  if (newNode == NULL)
+    return EXIT_FAILURE;
+
   newNode->data = data;
 
   if (index == 0) {
     newNode->next = list->first;
     list->first->prev = newNode;
     list->first = newNode;
-    return;
+    return EXIT_SUCCESS;
   }
 
   Node *oldNode = linked_list_get_nth(list, index);
   if (oldNode == NULL)
-    return;
+    return EXIT_FAILURE;
 
   newNode->prev = oldNode->prev;
   oldNode->prev->next = newNode;
 
   newNode->next = oldNode;
   oldNode->prev = newNode;
+
+  return EXIT_SUCCESS;
 }
 
 void linked_list_remove_nth(LinkedList *list, int index) {
