@@ -31,8 +31,7 @@ int main() {
 
   int result = change(sum, coins, coinsLength);
 
-  printf("the sum %i can be changed in %i ways using the coins: ", sum,
-         result);
+  printf("the sum %i can be changed in %i ways using the coins: ", sum, result);
   for (int i = 0; i < coinsLength; i++) {
     printf("%i ", coins[i]);
   }
